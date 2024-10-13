@@ -15,18 +15,18 @@ self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
 	발표 때 프로그램 ui를 최상단에 유지하려면 주석처리한 이 코드를 키고
 	아닐때는 <windows>를 활용한 창의 위치 및 크기를 조절하는 단축키가 안먹히기에
 	웬만하면 주석처리
-	그리고 직접 이  3가지 버튼은 누를 수 있음 
+	그리고 직접 이 ![image](https://github.com/user-attachments/assets/12015ed5-eb3e-42a0-9bc2-276829014cac) 3가지 버튼은 누를 수 있음 
 	발표할 때 직접 누르면서 처리하기
 	이 코드를 주석처리한 위치는
 	<Ctrl> + f로 텍스트 찾기를 실행한 후 “발표”라는 텍스트를 검색하면
 	이렇게 뜨는데 이 코드를 주석 해제하면 ui를 최상단 고정 가능함
  
- ![image](https://github.com/user-attachments/assets/953c957b-2888-4f25-861a-7bc6ba9deb1b)
+![image](https://github.com/user-attachments/assets/65ea2853-e4aa-497e-ac44-dd65e84d61a3)
 
 
 초기화면
 
-![image](https://github.com/user-attachments/assets/71bece07-b138-4837-ba9c-7f324fc6abbd)
+![image](https://github.com/user-attachments/assets/238bcbbf-68ee-4132-a3e5-c82fdcbd6945)
 
 똑똑이라고 마이크에 말을 하게 될 시 google web speech API로 stt를 실행하며
 해당 똑똑이라는 speech가 text로 변환됨 
@@ -45,7 +45,8 @@ response.wav 음성파일이 실행됨
 프로그램의 동작을 제어하는 코드를 넣은 이유:
    제어하지 않으면 모든 소리에 대해 stt를 수행하고 tts 번역을 하기 때문
    
-![image](https://github.com/user-attachments/assets/6b312ba6-7200-4804-b656-a9363773aacb)
+![image](https://github.com/user-attachments/assets/1b52c570-8e96-422f-a89a-c2d4e492c225)
+
 
 0-0. 과자종류: 
 	스윙칩, 빼빼로, 허니버터칩, 프링글스, 칙촉, 꼬북칩, 오사쯔, ABC 초코쿠키, 콘초, 	콘칩, 다이제, 포카칩
