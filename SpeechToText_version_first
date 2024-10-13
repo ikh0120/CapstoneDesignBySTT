@@ -1,0 +1,267 @@
+초반부분
+#gTTS.py
+import os
+from gtts import gTTS
+
+# transcription.txt 파일에서 텍스트 읽기
+with open('transcription.txt', 'r', encoding='utf-8') as file:
+    text = file.read()
+
+# 출력할 메시지를 저장할 변수
+final_message = ""
+# final_message 문자열 초기화 함수
+def reset_final_message():
+    global final_message
+    final_message = ""  # final_message를 빈 문자열로 초기화
+
+reset_final_message()
+## 과자 종류:
+### "스윙칩", "빼빼로", "허니버터칩", "프링글스", "칙촉", "꼬북칩", "오사쯔", "ABC 초코쿠키", "콘초", "콘칩", "다이제", "포카칩"
+
+# 특정 문자열 확인 및 TTS 출력
+if "과자 종류" in text:
+    final_message = "저희 매장에서 판매하는 과자는 스윙칩, 빼빼로, 허니버터칩, 프링글스, 칙촉, 꼬북칩, 오사쯔, ABC 초코쿠기, 콘초, 콘칩, 다이제, 포카칩이 있습니다. \n어떤 과자를 찾으십니까? \n찾으시는 과자가 있다면 말씀해주세요. \n";
+# "과자 종류"라는 텍스트가 입력될 때 실행될 함수
+def process_snack_request():
+    # 메시지 출력
+    print("저희 매장에서 판매하는 과자는 스윙칩, 빼빼로, 허니버터칩, 프링글스, 칙촉, 꼬북칩, 오사쯔, ABC 초코쿠기, 콘초, 콘칩, 다이제 포카칩이 있습니다. \n어떤 과자를 찾으십니까? \n찾으시는 과자가 있다면 말씀해주세요. \n")
+    
+    # transcription.txt 초기화
+    with open('whisper_speechToText/whisper_real_time/transcription.txt', 'w', encoding='utf-8') as f:
+        f.write("")  # 파일을 빈 문자열로 초기화
+    
+    # gTTS 실행 (여기서는 단순히 gTTS.py를 다시 호출하는 방법을 예시로)
+    os.system('python gTTS.py')  # gTTS.py를 실행 (Python 경로가 필요할 수 있음)
+
+
+
+if "스윙칩" in text:
+    final_message += "스윙칩은 A열 11번째 라인에 있고, \n"
+
+if "빼빼로" in text:
+    final_message += "빼빼로는 A열 13번째 라인에 있고, \n"
+
+if "허니버터칩" in text:
+    final_message += "허니버터칩은 B열 3번째 라인에 있고, \n"
+
+if "프링글스" in text:
+    final_message += "프링글스는 B열 16번째 라인에 있고, \n"
+
+if "칙촉" in text:
+    final_message += "칙촉은 C열 9번째 라인에 있고, \n"
+
+if "꼬북칩" in text:
+    final_message += "꼬북칩은 C열 17번째 라인에 있고, \n"
+
+if "오사쯔" in text:
+    final_message += "오사쯔는 D열 6번째 라인에 있고, \n"
+
+if "ABC 초코쿠키" in text:
+    final_message += "ABC 초코쿠키는 D열 22번째 라인에 있고, \n"
+
+if "콘초" in text:
+    final_message += "콘초는 E열 2번째 라인에 있고, \n"
+
+if "콘칩" in text:
+    final_message += "콘칩은 E열 12번째 라인에 있고, \n"
+
+if "다이제" in text:
+    final_message += "다이제는 F열 3번째 라인에 있고, \n"
+
+if "포카칩" in text:
+    final_message += "포카칩은 F열 7번째 라인에 있고, \n"
+
+if final_message == "":
+    final_message = "현재 요청하신 상품은 존재하지 않습니다. 다시 한 번 말씀해주세요. \n"
+
+if final_message.endswith("있고, \n"):
+    final_message = final_message[:-9] + "라인에 있습니다. \n"
+
+print(final_message)
+
+# TTS를 사용하여 최종 메시지 출력
+if final_message:
+    tts = gTTS(text=final_message, lang='ko')
+    tts.save("C:\\Users\\User\\CapstoneDesign\\whisper_speechToText\\ikh_TextToSpeech\\final_message.wav")
+    os.system("start C:\\Users\\User\\CapstoneDesign\\whisper_speechToText\\ikh_TextToSpeech\\final_message.wav")
+    reset_final_message()  # final_message 초기화
+    text = ""  # text 문자열 초기화
+    with open('C:\\Users\\User\\CapstoneDesign\\whisper_speechToText\\whisper_real_time\\transcription.txt', 'w', encoding='utf-8') as f:
+        f.write("")  # transcription.txt 초기화
+
+
+# transcribe_demo.py
+import argparse
+import os
+import numpy as np
+import speech_recognition as sr
+import whisper
+import torch
+import subprocess  # gTTS.py 실행을 위해 추가
+import time
+
+from datetime import datetime, timedelta
+from queue import Queue
+from time import sleep
+from sys import platform
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--model", default="medium", help="사용할 모델",
+                        choices=["tiny", "base", "small", "medium", "large"])
+    parser.add_argument("--non_english", action='store_true',
+                        help="영어 모델 사용 안함")
+    ## energy_threshold 값은 환경에 따라 다를 수 있지만, 일반적으로는 몇 가지 기준이 있습니다:
+    ## 일반적인 사무실 환경: 1000에서 2000 사이의 값이 적당합니다.
+    ## 조용한 환경: 500 이하로 설정해도 좋습니다.
+    ## 소음이 많은 환경: 3000 이상으로 설정할 수 있습니다.
+    ## 제발 씨발아 뭐가 맞는거냐 ㅅㅂ
+    ## 터미널에 python transcribe_demo.py --model 모델 --non_english 넣으면 실행됨
+    ## 모델 크기 작은 순서
+    ## tiny -> base -> small -> medium -> large
+    ## default option으로 medium이 설정되어있음
+    ## CapstoneDesign 가상환경 진입 방법:   가상환경의 바로 상위 경로로가서 .\[가상환경이름]\Scripts\activate를 하면 켜진다
+    ### 1. cd C:\Users\User로 간다
+    ### 2. .\CapstoneDesign\Scripts\activate    # 이 때 가상환경은 활성화 됨
+    ### 3. cd CapstoneDesign\whisper_speechToText\whisper_real_time
+
+    parser.add_argument("--energy_threshold", default=10,
+                        help="마이크가 감지할 에너지 레벨", type=int)
+    parser.add_argument("--record_timeout", default=2,
+                        help="녹음이 지속되는 시간(단위: 초)", type=float)
+    parser.add_argument("--phrase_timeout", default=3,
+                        help="녹음 간의 공백이 새로운 줄로 간주되는 시간(단위: 초)", type=float)
+
+    # Linux 사용자의 기본 마이크 설정
+    if 'linux' in platform:
+        parser.add_argument("--default_microphone", default='pulse',
+                            help="SpeechRecognition의 기본 마이크 이름", type=str)
+    args = parser.parse_args()
+
+    # 녹음 데이터 큐와 음성 인식기 초기화
+    phrase_time = None
+    data_queue = Queue()
+    recorder = sr.Recognizer()
+    recorder.energy_threshold = args.energy_threshold
+    recorder.dynamic_energy_threshold = False  # 동적 에너지 조정 비활성화
+
+    # 마이크 소스 설정 (Linux 사용자에 대한 처리 포함)
+    if 'linux' in platform:
+        mic_name = args.default_microphone
+        if not mic_name or mic_name == 'list':
+            print("사용 가능한 마이크 장치: ")
+            for index, name in enumerate(sr.Microphone.list_microphone_names()):
+                print(f"이름이 \"{name}\"인 마이크를 찾음. ")
+            return
+        else:
+            for index, name in enumerate(sr.Microphone.list_microphone_names()):
+                if mic_name in name:
+                    source = sr.Microphone(sample_rate=16000, device_index=index)
+                    break
+    else:
+        source = sr.Microphone(sample_rate=16000)
+
+    # Whisper 모델 로드
+    model = args.model
+    if args.model != "large" and not args.non_english:
+        model = model + ".en"
+    audio_model = whisper.load_model(model)
+
+    record_timeout = args.record_timeout
+    phrase_timeout = args.phrase_timeout
+
+    transcription = ['']  # 초기 전사 리스트
+
+    with source:
+        recorder.adjust_for_ambient_noise(source)  # 주변 소음에 대한 조정
+
+    def record_callback(_, audio: sr.AudioData) -> None:
+        """녹음이 완료되면 호출되는 콜백 함수"""
+        data = audio.get_raw_data()  # 원시 오디오 데이터를 가져옴
+        data_queue.put(data)  # 큐에 데이터 추가
+
+    # 배경 스레드에서 오디오 데이터 수신
+    recorder.listen_in_background(source, record_callback, phrase_time_limit=record_timeout)
+    # Cue the user that we're ready to go.
+    print("준비 완료.\n음성인식을 시작하세요.\n")
+
+    # 인식할 과자 이름 리스트
+    snack_names = ["과자 종류", "스윙칩", "빼빼로", "허니버터칩", "프링글스", "칙촉", "꼬북칩", "오사쯔", "ABC 초코쿠키", "콘초", "콘칩", "다이제", "포카칩"]
+
+    # 인식된 텍스트를 수정하는 메서드
+    def correct_snack_names(transcription_text):
+        for snack in snack_names:
+            if snack.lower() in transcription_text.lower():  # 인식된 텍스트에서 과자 이름 확인
+                return snack
+        return transcription_text
+
+    # gTTS.py 실행 메서드
+    def run_gtts():
+        print("gTTS.py 스크립트가 실행됩니다....")
+        try:
+            # 절대 경로로 gTTS.py 실행
+            subprocess.run(["python", "C:/Users/User/CapstoneDesign/whisper_speechToText/ikh_TextToSpeech/gTTS.py"])
+            with open('transcription.txt', 'w', encoding='utf-8') as f:
+                f.write("")  # 파일을 빈 문자열로 초기화
+        except Exception as e:
+            print(f"gTTS.py 실행 실패: {e}")
+
+    # 전사 결과를 파일에 저장
+    with open('transcription.txt', 'w', encoding='utf-8') as file:
+        while True:
+            try:
+                now = datetime.utcnow()
+                if not data_queue.empty():
+                    phrase_complete = False
+                    if phrase_time and now - phrase_time > timedelta(seconds=phrase_timeout):
+                        phrase_complete = True
+                    phrase_time = now
+
+                    audio_data = b''.join(data_queue.queue)  # 큐에서 모든 오디오 데이터 가져오기
+                    data_queue.queue.clear()  # 큐 초기화
+
+                    audio_np = np.frombuffer(audio_data, dtype=np.int16).astype(np.float32) / 32768.0
+                    result = audio_model.transcribe(audio_np, fp16=torch.cuda.is_available())  # 오디오 전사
+                    text = result['text'].strip()
+
+                    # 과자 이름 교정
+                    corrected_text = correct_snack_names(text)
+
+                    if phrase_complete:
+                        transcription.append(corrected_text)
+                    else:
+                        transcription[-1] = corrected_text
+
+                    # 콘솔에 출력
+                    ### os.system('cls' if os.name == 'nt' else 'clear')  # 화면 지우기
+                    for line in transcription:
+                        print(line)
+
+                    # 파일에 쓰기
+                    file.write(f"{corrected_text}\n")
+                    file.flush()  # 파일에 즉시 저장
+
+                    # "과자 종류" 확인 시 메시지 출력
+                    if "과자 종류" in corrected_text:
+                        new_message = "저희 매장에서 판매하는 과자는 스윙칩, 빼빼로, 허니버터칩, 프링글스, 칙촉, 꼬북칩, 오사쯔, ABC 초코쿠키, 콘초, 콘칩, 다이제, 포카칩이 있습니다. \n어떤 과자를 찾으십니까? \n찾으시는 과자가 있다면 말씀해주세요. \n"
+
+                    # 특정 과자 이름 인식 시 gTTS.py 실행
+                    if any(snack in corrected_text for snack in snack_names):
+                        run_gtts()
+
+                else:
+                    sleep(0.25)  # 대기 시간
+            except KeyboardInterrupt:
+                break
+
+    # 음성 녹음 결과 출력
+    print("\n\n음성 녹음 텍스트 변환 결과:")
+    for line in transcription:
+        print(line)
+
+
+if __name__ == "__main__":
+    main()
+    # TTS 스크립트 자동 실행
+    time.sleep(1)  # 잠시 대기
+    os.system('python C:/Users/User/CapstoneDesign/whisper_speechToText/ikh_TextToSpeech/gTTS.py')  # 절대 경로
