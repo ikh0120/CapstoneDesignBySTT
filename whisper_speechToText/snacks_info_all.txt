@@ -1,0 +1,37 @@
+# snacks_info_type_1
+스윙칩
+빼빼로
+허니버터칩
+프링글스
+칙촉
+꼬북칩
+오사쯔
+ABC 초코쿠키
+콘초
+콘칩
+다이제
+포카칩
+
+# snacks_info_types_2
+location: 위치
+price: 가격
+calories: 칼로리
+carbs: 탄수화물
+protein: 단백질
+fat: 지방
+
+# snacks_info_type_origin
+snacks_info = {     # location: 상품의 위치/price: 가격/calories: 칼로리/carbs: 탄수화물/protein: 단백질/fat: 지방
+    "스윙칩":       {"location": "A열 11번째 라인", "price": 1500, "calories": 500, "carbs": 50, "protein": 4, "fat": 30},
+    "빼빼로":       {"location": "A열 13번째 라인", "price": 1200, "calories": 330, "carbs": 40, "protein": 3, "fat": 15},
+    "허니버터칩":   {"location": "B열 3번째 라인",  "price": 1800, "calories": 455, "carbs": 50, "protein": 6, "fat": 25},
+    "프링글스":     {"location": "B열 16번째 라인", "price": 2000, "calories": 520, "carbs": 60, "protein": 5, "fat": 28},
+    "칙촉":         {"location": "C열 9번째 라인",  "price": 1000, "calories": 350, "carbs": 40, "protein": 6, "fat": 18},
+    "꼬북칩":       {"location": "C열 17번째 라인", "price": 1700, "calories": 480, "carbs": 55, "protein": 4, "fat": 27},
+    "오사쯔":       {"location": "D열 6번째 라인",  "price": 1400, "calories": 410, "carbs": 50, "protein": 2, "fat": 20},
+    "ABC 초코쿠키": {"location": "D열 22번째 라인", "price": 1200, "calories": 320, "carbs": 30, "protein": 3, "fat": 16},
+    "콘초":         {"location": "E열 2번째 라인",  "price": 1000, "calories": 300, "carbs": 40, "protein": 2, "fat": 12},
+    "콘칩":         {"location": "E열 12번째 라인", "price": 1100, "calories": 425, "carbs": 50, "protein": 5, "fat": 22},
+    "다이제":       {"location": "F열 3번째 라인",  "price": 1600, "calories": 450, "carbs": 50, "protein": 6, "fat": 25},
+    "포카칩":       {"location": "F열 7번째 라인",  "price": 1300, "calories": 480, "carbs": 50, "protein": 4, "fat": 26}
+}
