@@ -56,7 +56,7 @@ class App(QWidget):
         super().__init__()
         # 창을 맨 앞으로 유지시키는 코드 
         # 하지만 <windows> -> 같은 단축키 사용이 불편하기에 발표 때 키기
-        # self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
+        #self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.title = 'Store Information By SMART'
         self.initUI()
         self.speech_thread = SpeechRecognitionThread()
